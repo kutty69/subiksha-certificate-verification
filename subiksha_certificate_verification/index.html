@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificate Verification | Subiksha Makeup Academy</title>
+<style>
+*{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f6f1e8;color:#2a1b17}
+.container{max-width:760px;margin:40px auto;padding:20px}
+.card{background:#fff;border:1px solid #d9c19b;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.08);overflow:hidden}
+.header{padding:28px;text-align:center;background:linear-gradient(135deg,#fff8ea,#f7ead7);border-bottom:1px solid #e0c99e}
+.header h1{margin:0 0 8px;font-family:Georgia,serif;letter-spacing:1px;color:#6b171d}
+.header p{margin:0;color:#6d625d}
+.status{margin:24px;padding:18px;border-radius:12px;background:#f2f8f2;border:1px solid #b9d7b9;text-align:center}
+.status strong{font-size:22px;color:#28652d}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#e2d7c8;margin:0 24px 24px}
+.item{background:#fff;padding:15px}.label{font-size:12px;color:#776e68;text-transform:uppercase;letter-spacing:.6px}.value{margin-top:5px;font-weight:600}
+.footer{padding:20px 24px;background:#faf7f2;font-size:13px;color:#665d57;line-height:1.5}
+.invalid{background:#fff3f3;border-color:#e0b1b1}.invalid strong{color:#a11d24}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.container{margin:15px auto;padding:10px}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="card">
+<div class="header">
+<h1>SUBIKSHA MAKEUP ACADEMY</h1>
+<p>Certificate Verification</p>
+</div>
+<div id="content"></div>
+</div>
+</div>
+<script>
+/*
+  EDIT THE records OBJECT BELOW with the real certificate details.
+  The QR code should contain this page URL followed by ?id=CERTIFICATE_ID.
+*/
+const records = {
+  "SMA-2026-001": {
+    name: "ENTER STUDENT NAME",
+    course: "Professional Beautician / Makeup Artistry Course",
+    institution: "Subiksha Makeup Academy",
+    trainingPeriod: "ENTER TRAINING PERIOD",
+    courseDuration: "ENTER COURSE DURATION",
+    issueDate: "ENTER ISSUE DATE",
+    mode: "ENTER MODE OF TRAINING",
+    grade: "ENTER GRADE / RESULT",
+    certificateNo: "SMA-2026-001",
+    status: "VALID"
+  }
+};
+
+const id = new URLSearchParams(location.search).get("id");
+const r = id ? records[id] : null;
+const root = document.getElementById("content");
+
+if (!r) {
+  root.innerHTML = `<div class="status invalid"><strong>Certificate Not Found</strong><p>We could not find a certificate matching this verification ID.</p></div>`;
+} else {
+  root.innerHTML = `
+    <div class="status"><strong>✓ CERTIFICATE VERIFIED</strong><p>This certificate record was found in the academy's verification register.</p></div>
+    <div class="grid">
+      <div class="item"><div class="label">Certificate No.</div><div class="value">${r.certificateNo}</div></div>
+      <div class="item"><div class="label">Certificate Status</div><div class="value">${r.status}</div></div>
+      <div class="item"><div class="label">Student Name</div><div class="value">${r.name}</div></div>
+      <div class="item"><div class="label">Course</div><div class="value">${r.course}</div></div>
+      <div class="item"><div class="label">Institution</div><div class="value">${r.institution}</div></div>
+      <div class="item"><div class="label">Course Duration</div><div class="value">${r.courseDuration}</div></div>
+      <div class="item"><div class="label">Training Period</div><div class="value">${r.trainingPeriod}</div></div>
+      <div class="item"><div class="label">Date of Issue</div><div class="value">${r.issueDate}</div></div>
+      <div class="item"><div class="label">Mode of Training</div><div class="value">${r.mode}</div></div>
+      <div class="item"><div class="label">Grade / Result</div><div class="value">${r.grade}</div></div>
+    </div>
+    <div class="footer"><b>Verification note:</b> This webpage verifies the certificate record maintained by the issuing academy. It does not by itself establish government accreditation or affiliation.</div>
+  `;
+}
+</script>
+</body>
+</html>
