@@ -1,79 +1,392 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Certificate Verification | Subiksha Makeup Academy</title>
-<style>
-*{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f6f1e8;color:#2a1b17}
-.container{max-width:760px;margin:40px auto;padding:20px}
-.card{background:#fff;border:1px solid #d9c19b;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.08);overflow:hidden}
-.header{padding:28px;text-align:center;background:linear-gradient(135deg,#fff8ea,#f7ead7);border-bottom:1px solid #e0c99e}
-.header h1{margin:0 0 8px;font-family:Georgia,serif;letter-spacing:1px;color:#6b171d}
-.header p{margin:0;color:#6d625d}
-.status{margin:24px;padding:18px;border-radius:12px;background:#f2f8f2;border:1px solid #b9d7b9;text-align:center}
-.status strong{font-size:22px;color:#28652d}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#e2d7c8;margin:0 24px 24px}
-.item{background:#fff;padding:15px}.label{font-size:12px;color:#776e68;text-transform:uppercase;letter-spacing:.6px}.value{margin-top:5px;font-weight:600}
-.footer{padding:20px 24px;background:#faf7f2;font-size:13px;color:#665d57;line-height:1.5}
-.invalid{background:#fff3f3;border-color:#e0b1b1}.invalid strong{color:#a11d24}
-@media(max-width:600px){.grid{grid-template-columns:1fr}.container{margin:15px auto;padding:10px}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Certificate Verification | Subiksha Makeup Academy</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #222;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.10);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #111111;
+            color: white;
+            text-align: center;
+            padding: 35px 20px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 15px;
+            opacity: 0.85;
+        }
+
+        .content {
+            padding: 35px;
+        }
+
+        .status {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .check {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            background: #e7f7ed;
+            color: #16833b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        .valid {
+            color: #16833b;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-top: 7px;
+            font-size: 14px;
+        }
+
+        .details {
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 16px 18px;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .row:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            color: #666;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .value {
+            text-align: right;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .verified {
+            color: #16833b;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #fafafa;
+            border-top: 1px solid #eeeeee;
+            color: #777;
+            font-size: 13px;
+        }
+
+        .verification-id {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .verification-id strong {
+            color: #222;
+        }
+
+        .invalid {
+            text-align: center;
+            padding: 30px 10px;
+        }
+
+        .invalid-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .invalid h2 {
+            color: #c62828;
+            margin-bottom: 10px;
+        }
+
+        .invalid p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 550px) {
+            .content {
+                padding: 25px 20px;
+            }
+
+            .header h1 {
+                font-size: 23px;
+            }
+
+            .row {
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .value {
+                text-align: left;
+            }
+        }
+    </style>
 </head>
+
 <body>
+
 <div class="container">
-<div class="card">
-<div class="header">
-<h1>SUBIKSHA MAKEUP ACADEMY</h1>
-<p>Certificate Verification</p>
-</div>
-<div id="content"></div>
-</div>
-</div>
-<script>
-/*
-  EDIT THE records OBJECT BELOW with the real certificate details.
-  The QR code should contain this page URL followed by ?id=CERTIFICATE_ID.
-*/
-const records = {
-  "SMA-2026-001": {
-    name: "ENTER STUDENT NAME",
-    course: "Professional Beautician / Makeup Artistry Course",
-    institution: "Subiksha Makeup Academy",
-    trainingPeriod: "ENTER TRAINING PERIOD",
-    courseDuration: "ENTER COURSE DURATION",
-    issueDate: "ENTER ISSUE DATE",
-    mode: "ENTER MODE OF TRAINING",
-    grade: "ENTER GRADE / RESULT",
-    certificateNo: "SMA-2026-001",
-    status: "VALID"
-  }
-};
 
-const id = new URLSearchParams(location.search).get("id");
-const r = id ? records[id] : null;
-const root = document.getElementById("content");
-
-if (!r) {
-  root.innerHTML = `<div class="status invalid"><strong>Certificate Not Found</strong><p>We could not find a certificate matching this verification ID.</p></div>`;
-} else {
-  root.innerHTML = `
-    <div class="status"><strong>✓ CERTIFICATE VERIFIED</strong><p>This certificate record was found in the academy's verification register.</p></div>
-    <div class="grid">
-      <div class="item"><div class="label">Certificate No.</div><div class="value">${r.certificateNo}</div></div>
-      <div class="item"><div class="label">Certificate Status</div><div class="value">${r.status}</div></div>
-      <div class="item"><div class="label">Student Name</div><div class="value">${r.name}</div></div>
-      <div class="item"><div class="label">Course</div><div class="value">${r.course}</div></div>
-      <div class="item"><div class="label">Institution</div><div class="value">${r.institution}</div></div>
-      <div class="item"><div class="label">Course Duration</div><div class="value">${r.courseDuration}</div></div>
-      <div class="item"><div class="label">Training Period</div><div class="value">${r.trainingPeriod}</div></div>
-      <div class="item"><div class="label">Date of Issue</div><div class="value">${r.issueDate}</div></div>
-      <div class="item"><div class="label">Mode of Training</div><div class="value">${r.mode}</div></div>
-      <div class="item"><div class="label">Grade / Result</div><div class="value">${r.grade}</div></div>
+    <div class="header">
+        <h1>Subiksha Makeup Academy</h1>
+        <p>Certificate Verification Portal</p>
     </div>
-    <div class="footer"><b>Verification note:</b> This webpage verifies the certificate record maintained by the issuing academy. It does not by itself establish government accreditation or affiliation.</div>
-  `;
-}
+
+    <div class="content" id="verificationContent">
+        <!-- Certificate information will appear here -->
+    </div>
+
+    <div class="footer">
+        This page is provided for certificate verification purposes.
+    </div>
+
+</div>
+
+<script>
+
+    /*
+     * Certificate Database
+     *
+     * The certificate number is used as the verification ID.
+     *
+     * Example:
+     * https://kutty69.github.io/subiksha-certificate-verification/?id=1000
+     */
+
+    const certificates = {
+
+        "1000": {
+            name: "Kalliyany",
+            certificateNumber: "1000",
+            course: "Master Course",
+            duration: "3 Months",
+            trainingPeriod: "1 January 2026 – 1 March 2026",
+            issueDate: "15 March 2026",
+            institution: "Subiksha Makeup Academy"
+        }
+
+    };
+
+
+    // Get certificate ID from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const certificateId = urlParams.get("id");
+
+    const content = document.getElementById("verificationContent");
+
+
+    // Check whether certificate exists
+    if (certificateId && certificates[certificateId]) {
+
+        const certificate = certificates[certificateId];
+
+        content.innerHTML = `
+
+            <div class="status">
+
+                <div class="check">
+                    ✓
+                </div>
+
+                <div class="valid">
+                    Certificate Verified
+                </div>
+
+                <div class="subtitle">
+                    This certificate number is registered in our verification system.
+                </div>
+
+            </div>
+
+
+            <div class="details">
+
+                <div class="row">
+                    <div class="label">
+                        Certificate Number
+                    </div>
+
+                    <div class="value">
+                        ${certificate.certificateNumber}
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="label">
+                        Name
+                    </div>
+
+                    <div class="value">
+                        ${certificate.name}
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="label">
+                        Course
+                    </div>
+
+                    <div class="value">
+                        ${certificate.course}
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="label">
+                        Duration
+                    </div>
+
+                    <div class="value">
+                        ${certificate.duration}
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="label">
+                        Training Period
+                    </div>
+
+                    <div class="value">
+                        ${certificate.trainingPeriod}
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="label">
+                        Issue Date
+                    </div>
+
+                    <div class="value">
+                        ${certificate.issueDate}
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="label">
+                        Institution
+                    </div>
+
+                    <div class="value">
+                        ${certificate.institution}
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="label">
+                        Status
+                    </div>
+
+                    <div class="value verified">
+                        ✓ VALID
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="verification-id">
+                Verification ID:
+                <strong>${certificate.certificateNumber}</strong>
+            </div>
+
+        `;
+
+    } else {
+
+        // Certificate not found
+
+        content.innerHTML = `
+
+            <div class="invalid">
+
+                <div class="invalid-icon">
+                    ⚠️
+                </div>
+
+                <h2>Certificate Not Found</h2>
+
+                <p>
+                    We could not find a certificate matching the
+                    verification ID provided.
+                </p>
+
+                <br>
+
+                <p>
+                    Please check the certificate number and try again.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
 </script>
+
 </body>
 </html>
