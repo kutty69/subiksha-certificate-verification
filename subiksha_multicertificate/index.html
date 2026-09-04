@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Certificate Verification | Subiksha Makeup Academy</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f5f5f5;color:#222;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}.card{width:100%;max-width:680px;background:#fff;border-radius:18px;box-shadow:0 10px 35px #00000014;overflow:hidden}.head{background:#111;color:#fff;text-align:center;padding:34px 20px}.head h1{margin:0 0 8px;font-size:27px}.head p{margin:0;opacity:.82}.body{padding:32px}.status{text-align:center;margin-bottom:28px}.check{width:68px;height:68px;border-radius:50%;background:#e8f7ee;color:#17833d;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:700;margin:0 auto 13px}.valid{font-size:24px;font-weight:700;color:#17833d}.sub{font-size:14px;color:#666;margin-top:7px}.details{border:1px solid #e7e7e7;border-radius:12px;overflow:hidden}.row{display:flex;justify-content:space-between;gap:20px;padding:16px 18px;border-bottom:1px solid #eee}.row:last-child{border:0}.label{color:#666;font-size:14px;font-weight:600}.value{text-align:right;font-size:14px;font-weight:600}.ok{color:#17833d}.error{text-align:center;padding:25px 5px}.error-icon{font-size:52px}.error h2{color:#c62828;margin:12px 0 8px}.error p{color:#666;line-height:1.6}.foot{text-align:center;background:#fafafa;border-top:1px solid #eee;padding:18px;color:#777;font-size:12px}.id{margin-top:18px;text-align:center;color:#666;font-size:13px}.id strong{color:#222}@media(max-width:560px){.body{padding:24px 18px}.row{flex-direction:column;gap:6px}.value{text-align:left}.head h1{font-size:23px}}
+</style></head>
+<body><main class="card"><header class="head"><h1>Subiksha Makeup Academy</h1><p>Certificate Verification Portal</p></header><section class="body" id="app">Checking certificate…</section><footer class="foot">This verification page confirms records published by the issuing academy.</footer></main>
+<script>
+const app=document.getElementById('app');
+const id=new URLSearchParams(location.search).get('id');
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+async function main(){
+ if(!id){return app.innerHTML='<div class="error"><div class="error-icon">🔎</div><h2>Certificate ID Required</h2><p>Scan the QR code on a certificate or provide a certificate ID.</p></div>'}
+ try{
+  const r=await fetch('certificates.json?ts='+Date.now(),{cache:'no-store'}); if(!r.ok) throw 0; const db=await r.json(); const c=db[id];
+  if(!c || String(c.status).toUpperCase()!=='VALID') return app.innerHTML='<div class="error"><div class="error-icon">⚠️</div><h2>Certificate Not Found</h2><p>No valid certificate record was found for verification ID <strong>'+esc(id)+'</strong>.</p></div>';
+  app.innerHTML='<div class="status"><div class="check">✓</div><div class="valid">Certificate Verified</div><div class="sub">This certificate number is registered in the academy verification system.</div></div><div class="details">'+[
+ ['Certificate Number',c.certificateNumber],['Name',c.name],['Course',c.course],['Duration',c.duration],['Training Period',c.trainingPeriod],['Issue Date',c.issueDate],['Institution',c.institution],['Status','✓ VALID']
+ ].map(([a,b])=>'<div class="row"><div class="label">'+esc(a)+'</div><div class="value '+(a==='Status'?'ok':'')+'">'+esc(b)+'</div></div>').join('')+'</div><div class="id">Verification ID: <strong>'+esc(c.certificateNumber)+'</strong></div>';
+ }catch(e){app.innerHTML='<div class="error"><div class="error-icon">⚠️</div><h2>Verification Unavailable</h2><p>Please try again later.</p></div>'}
+}
+main();
+</script></body></html>
